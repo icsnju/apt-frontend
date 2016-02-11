@@ -1,28 +1,21 @@
 'use strict';
 
-angular.module('aptWebApp')
-  .controller('TableCtrl', function($scope, $http) {
-    // $scope.jobs = [{
-    //   id: "1",
-    //   start_time: "111",
-    //   frame: "2222",
-    //   filter: "3333",
-    //   process: "30"
-    // }, {
-    //   id: "1",
-    //   start_time: "111",
-    //   frame: "2222",
-    //   filter: "3333",
-    //   process: "30"
-    // }, {
-    //   id: "1",
-    //   start_time: "111",
-    //   frame: "2222",
-    //   filter: "3333",
-    //   process: "30"
-    // }];
-    $http.get('api/job').then(response => {
-      $scope.jobs = response.data;
-    });
+(function() {
 
-  });
+  class TableController {
+
+    constructor($scope, $http) {
+      $scope.jobs = [];
+
+      $http.get('/api/job').then(response => {
+        if (response) {
+          $scope.jobs = response.data;
+        }
+      });
+    }
+  }
+
+  angular.module('aptWebApp')
+    .controller('TableCtrl', TableController);
+
+})();

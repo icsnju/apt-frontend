@@ -59,11 +59,39 @@ function handleError(res, statusCode) {
   };
 }
 
+//Gets a list of Jobs
+// export function index(req, res) {
+//   Job.findAsync()
+//     .then(respondWithResult(res))
+//     .catch(handleError(res));
+// }
+
 // Gets a list of Jobs
 export function index(req, res) {
-  Job.findAsync()
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+  // Job.findAsync()
+  //   .then(respondWithResult(res))
+  //   .catch(handleError(res));
+  var jobs = [{
+    id: "1",
+    start_time: "111",
+    frame: "2222",
+    filter: "3333",
+    process: "30"
+  }, {
+    id: "1",
+    start_time: "111",
+    frame: "2222",
+    filter: "3333",
+    process: "30"
+  }, {
+    id: "1",
+    start_time: "111",
+    frame: "2222",
+    filter: "3333",
+    process: "30"
+  }];
+  var statusCode = 200;
+  res.status(statusCode).json(jobs);
 }
 
 // Gets a single Job from the DB

@@ -12,6 +12,8 @@ import http from 'http';
 
 // Connect to MongoDB
 mongoose.connect(config.mongo.uri, config.mongo.options);
+console.log(config.mongo.uri);
+console.log(config.mongo.options);
 mongoose.connection.on('error', function(err) {
   console.error('MongoDB connection error: ' + err);
   process.exit(-1);

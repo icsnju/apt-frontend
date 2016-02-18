@@ -29,15 +29,14 @@
                 </tr>
               </thead>
               <tbody>
-                  <tr class="gradeU" ng-repeat="job in jobs" ng-click="selectJob(job)" ng-switch on="isSelected(job)">
-                    <td>{{job.id}}</td>
-                    <td>{{job.start_time}}</td>
-                    <td>{{job.frame}}</td>
-                    <td>{{job.filter}}</td>
-                    <td>{{job.process}}</td>
-                  </tr>
+                <tr class="gradeU" ng-repeat="job in jobs" ng-click="selectJob(job)" ng-switch on="isSelected(job)">
+                  <td>{{job.JobId}}</td>
+                  <td>{{job.StartTime}}</td>
+                  <td>{{job.FrameKind}}</td>
+                  <td>{{job.FilterKind}}</td>
+                  <td>{{job.Status}}</td>
+                </tr>
               </tbody>
-
             </table>
           </div>
           <!-- /.table-responsive -->

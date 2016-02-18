@@ -7,7 +7,7 @@
     constructor($scope, $http) {
       $scope.jobs = [];
 
-      $http.get('/api/job').then(response => {
+      $http.get('/api/jobs').then(response => {
         if (response) {
           $scope.jobs = response.data;
         }

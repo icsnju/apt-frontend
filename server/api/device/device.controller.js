@@ -1,22 +1,22 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * GET     /api/jobs              ->  index
- * POST    /api/jobs              ->  create
- * GET     /api/jobs/:id          ->  show
- * PUT     /api/jobs/:id          ->  update
- * DELETE  /api/jobs/:id          ->  destroy
+ * GET     /api/devices              ->  index
+ * POST    /api/devices              ->  create
+ * GET     /api/devices/:id          ->  show
+ * PUT     /api/devices/:id          ->  update
+ * DELETE  /api/devices/:id          ->  destroy
  */
 
 'use strict';
 
 import _ from 'lodash';
-import Job from './job.model';
+import Device from './device.model';
+
 import net from 'net';
 
 var HOST = '127.0.0.1';
 var PORT = 6666;
-var CHECKJOBS   = 'jobs'
-
+var CHECKDEVICES = 'devices'
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -65,33 +65,17 @@ function handleError(res, statusCode) {
   };
 }
 
-//Gets a list of Jobs
-// export function index(req, res) {
-//   Job.findAsync()
-//     .then(respondWithResult(res))
-//     .catch(handleError(res));
-// }
-
-// Gets a list of Jobs
+// Gets a list of Devices
 export function index(req, res) {
-  // var jobs = [{
-  //   "JobId": "1",
-  //   "StartTime": "111",
-  //   frame: "2222",
-  //   filter: "3333",
-  //   process: "30"
-  // }];
-  // var statusCode = 200;
-  // res.status(statusCode).json(jobs);
   var client = new net.Socket();
 
   client.connect(PORT, HOST, function() {
     console.log('CONNECTED TO: ' + HOST + ':' + PORT);
-    client.write(CHECKJOBS);
+    client.write(CHECKDEVICES);
   });
 
   client.on('data', function(data) {
-    //console.log('DATA: ' + data);
+    console.log('DATA: ' + data);
     var statusCode = 200;
     res.status(statusCode).send(data);
     client.destroy();
@@ -102,36 +86,36 @@ export function index(req, res) {
   });
 }
 
-// Gets a single Job from the DB
+// Gets a single Device from the DB
 export function show(req, res) {
-  Job.findByIdAsync(req.params.id)
+  Device.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Creates a new Job in the DB
+// Creates a new Device in the DB
 export function create(req, res) {
-  Job.createAsync(req.body)
+  Device.createAsync(req.body)
     .then(respondWithResult(res, 201))
     .catch(handleError(res));
 }
 
-// Updates an existing Job in the DB
+// Updates an existing Device in the DB
 export function update(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
-  Job.findByIdAsync(req.params.id)
+  Device.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(saveUpdates(req.body))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Deletes a Job from the DB
+// Deletes a Device from the DB
 export function destroy(req, res) {
-  Job.findByIdAsync(req.params.id)
+  Device.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
     .catch(handleError(res));

@@ -12,10 +12,12 @@
 import _ from 'lodash';
 import Job from './job.model';
 import net from 'net';
+import fs from 'fs';
 
 var HOST = '127.0.0.1';
 var PORT = 6666;
-var CHECKJOBS = 'jobs'
+var CHECKJOBS = 'jobs';
+var SHAREPATH = '/Users/Tianchi/data/';
 
 
 function respondWithResult(res, statusCode) {
@@ -103,14 +105,29 @@ export function show(req, res) {
     .catch(handleError(res));
 }
 
-// Creates a new Job in the DB
+// Creates a new Job
 export function create(req, res) {
-  var file = req.files.file;
-  console.log(req.body.jobId);
-  //console.log(req.files);
 
-  var tmp_path = file.path;
-  var target_path = '';
+  //move test file
+  var file = req.files.file;
+  var timestamp = new Date().getTime();
+  var tmpPath = file.path;
+  var dirPath = SHAREPATH + timestamp;
+  fs.mkdir(dirPath, function(err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+  var targetPath = dirPath + '/' + file.name;
+  fs.rename(tmpPath, targetPath, function(err) {
+    if (err) {
+      console.log(err);
+      fs.unlink(tmpPath, function(err) {
+        if (err)
+          console.log(err);
+      });
+    }
+  })
 
   var statusCode = 200;
   res.status(statusCode).send('ok');

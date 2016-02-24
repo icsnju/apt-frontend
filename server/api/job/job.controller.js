@@ -15,7 +15,7 @@ import net from 'net';
 
 var HOST = '127.0.0.1';
 var PORT = 6666;
-var CHECKJOBS   = 'jobs'
+var CHECKJOBS = 'jobs'
 
 
 function respondWithResult(res, statusCode) {
@@ -65,13 +65,6 @@ function handleError(res, statusCode) {
   };
 }
 
-//Gets a list of Jobs
-// export function index(req, res) {
-//   Job.findAsync()
-//     .then(respondWithResult(res))
-//     .catch(handleError(res));
-// }
-
 // Gets a list of Jobs
 export function index(req, res) {
   // var jobs = [{
@@ -112,9 +105,15 @@ export function show(req, res) {
 
 // Creates a new Job in the DB
 export function create(req, res) {
-  Job.createAsync(req.body)
-    .then(respondWithResult(res, 201))
-    .catch(handleError(res));
+  var file = req.files.file;
+  console.log(req.body.jobId);
+  //console.log(req.files);
+
+  var tmp_path = file.path;
+  var target_path = '';
+
+  var statusCode = 200;
+  res.status(statusCode).send('ok');
 }
 
 // Updates an existing Job in the DB

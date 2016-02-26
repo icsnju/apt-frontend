@@ -1,3 +1,9 @@
 #submit-btn {
   margin-top: 15px;
 }
+.alert-sm {
+  font-size: 14px;
+  height: 30px;
+  padding: 4px;
+  margin-top: 5px;
+}

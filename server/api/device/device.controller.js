@@ -72,13 +72,12 @@ export function index(req, res) {
   client.connect(PORT, HOST, function() {
     console.log('CONNECTED TO: ' + HOST + ':' + PORT);
     client.write(CHECKDEVICES);
-  });
-
-  client.on('data', function(data) {
-    console.log('DATA: ' + data);
-    var statusCode = 200;
-    res.status(statusCode).send(data);
-    client.destroy();
+    client.on('data', function(data) {
+      console.log('DATA: ' + data);
+      var statusCode = 200;
+      res.status(statusCode).send(data);
+      client.destroy();
+    });
   });
 
   client.on('close', function() {

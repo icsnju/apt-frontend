@@ -17,7 +17,9 @@ import fs from 'fs';
 var HOST = '127.0.0.1';
 var PORT = 6666;
 var CHECKJOBS = 'jobs';
+var SUBJOB = 'websubjob';
 var SHAREPATH = '/Users/Tianchi/data/';
+var APPNAME = 'App.apk';
 
 
 function respondWithResult(res, statusCode) {
@@ -83,14 +85,14 @@ export function index(req, res) {
   client.connect(PORT, HOST, function() {
     console.log('CONNECTED TO: ' + HOST + ':' + PORT);
     client.write(CHECKJOBS);
+    client.on('data', function(data) {
+      //console.log('DATA: ' + data);
+      var statusCode = 200;
+      res.status(statusCode).send(data);
+      client.destroy();
+    });
   });
 
-  client.on('data', function(data) {
-    //console.log('DATA: ' + data);
-    var statusCode = 200;
-    res.status(statusCode).send(data);
-    client.destroy();
-  });
 
   client.on('close', function() {
     console.log('Connection closed');
@@ -108,29 +110,53 @@ export function show(req, res) {
 // Creates a new Job
 export function create(req, res) {
 
-  //move test file
   var file = req.files.file;
-  var timestamp = new Date().getTime();
-  var tmpPath = file.path;
-  var dirPath = SHAREPATH + timestamp;
-  fs.mkdir(dirPath, function(err) {
-    if (err) {
-      console.log(err);
-    }
-  });
-  var targetPath = dirPath + '/' + file.name;
-  fs.rename(tmpPath, targetPath, function(err) {
-    if (err) {
-      console.log(err);
-      fs.unlink(tmpPath, function(err) {
-        if (err)
-          console.log(err);
-      });
-    }
-  })
 
-  var statusCode = 200;
-  res.status(statusCode).send('ok');
+  //get the job
+  var job = req.body.job;
+
+  var client = new net.Socket();
+
+  client.connect(PORT, HOST, function() {
+
+    //get job id
+    console.log('CONNECTED TO: ' + HOST + ':' + PORT);
+    client.write(SUBJOB);
+    client.on('data', function(jobId) {
+      console.log('subjob: ' + jobId);
+
+      //move apk file to work directory
+      var dirPath = SHAREPATH + jobId;
+      fs.mkdir(dirPath, function(err) {
+        if (err) {
+          console.log(err);
+        }
+      });
+      var targetPath = dirPath + '/' + APPNAME;
+      fs.rename(file.path, targetPath, function(err) {
+        if (err) {
+          console.log(err);
+          fs.unlink(tmpPath, function(err) {
+            if (err)
+              console.log(err);
+          });
+        }
+      })
+      job.Frame.AppPath = targetPath;
+
+      //submit this job to master
+      client.write(JSON.stringify(job));
+
+      var statusCode = 200;
+      res.status(statusCode).send('ok');
+      client.destroy();
+    });
+  });
+
+  client.on('close', function() {
+    console.log('Connection closed');
+  });
+
 }
 
 // Updates an existing Job in the DB

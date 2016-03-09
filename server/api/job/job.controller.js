@@ -71,15 +71,7 @@ function handleError(res, statusCode) {
 
 // Gets a list of Jobs
 export function index(req, res) {
-  // var jobs = [{
-  //   "JobId": "1",
-  //   "StartTime": "111",
-  //   frame: "2222",
-  //   filter: "3333",
-  //   process: "30"
-  // }];
-  // var statusCode = 200;
-  // res.status(statusCode).json(jobs);
+
   var client = new net.Socket();
 
   client.connect(PORT, HOST, function() {

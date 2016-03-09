@@ -4,64 +4,32 @@
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-      <form class="form" name="req" ng-submit="submitJob()" novalidate>
-        <div class="row">
-            <h2>Step 1. Choose a Framework</h2>
+      <div id="form-container">
 
-            <div class="form-group">
-              <label>Application Input:</label>
-              <input type="file" ngf-select ng-model="monkey.file" name="file" required>
-              <p class="help-block">Choose an application to test.</p>
-              <div class="alert-sm alert alert-danger" role="alert" ng-show="req.file.$error.required && submitted">Please select an application file.
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Package Name:</label>
-              <input type="text" name="pkg" class="submit-input form-control" placeholder="com.example.app" ng-model="monkey.pkg" ng-maxlength="128" required>
-              <div class="alert-sm alert alert-danger" role="alert" ng-show="req.pkg.$error.required && submitted">Please enter the package name.</div>
-            </div>
-
-            <div class="form-group">
-              <label>Arguments:</label>
-              <input type="text" name="arg" class="submit-input form-control" placeholder=" -v 100" ng-model="monkey.arg" ng-maxlength="128" required>
-              <div class="alert-sm alert alert-danger" role="alert" ng-show="req.arg.$error.required && submitted">Please enter the arguments.</div>
-            </div>
+        <div class="page-header text-center">
+          <h2>Let's Be Cool</h2>
+          <!-- the links to our nested states using relative paths -->
+          <!-- add the active class if the state matches our ui-sref -->
+          <div id="status-buttons" class="text-center">
+            <a ui-sref-active="active" ui-sref=".frame">
+              <span>1</span>
+              How</a>
+            <a ui-sref-active="active" ui-sref=".selector">
+              <span>2</span>
+              Where</a>
+            <a ui-sref-active="active" ui-sref=".ok" ng-click="checkEmpty()">
+              <span>3</span>
+              Wow</a>
+          </div>
         </div>
 
-        <div class="row">
-            <h2>2. Choose Devices</h2>
-            <table class="table table-striped table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Manufacturers</th>
-                  <th>Model</th>
-                  <th>BuildVersion</th>
-                  <th>API</th>
-                  <th>Select</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="device in devices">
-                  <td>{{device.Id}}</td>
-                  <td>{{device.Manu}}</td>
-                  <td>{{device.Model}}</td>
-                  <td>{{device.BuildVersion}}</td>
-                  <td>{{device.Api}}</td>
-                  <td><input type="checkbox" ng-model="device.check"></td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="alert-sm alert alert-danger" role="alert" ng-show="!monkey.selected && submitted">Please select some devices.</div>
-        </div>
+        <!-- use ng-submit to catch the form submission and use our Angular function -->
+        <form id="signup-form" name="req" ng-submit="submitJob()" novalidate>
+          <!-- our nested state views will be injected here -->
+          <div id="form-views" ui-view></div>
+        </form>
 
-        <div class="row">
-          <div class="alert-sm alert alert-success" role="alert" ng-show="submitok">Successful!</div>
-          <button class="btn col-md-2 col-md-offset-5 btn btn-success" type="submit">submit</button>
-        </div>
-      </form>
-      <!-- <pre ng-bind="SubJob | json"></pre> -->
+      </div>
     </div>
     <div class="col-md-2"></div>
   </div>

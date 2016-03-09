@@ -1,6 +1,8 @@
-#submit-btn {
-  margin-top: 15px;
+
+.submit-input{
+  width: 50%;
 }
+
 .alert-sm {
   font-size: 14px;
   height: 30px;

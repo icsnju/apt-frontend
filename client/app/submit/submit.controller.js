@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('aptWebApp')
-  .controller('SubmitCtrl', function($scope, $http, Upload) {
+  .controller('SubmitCtrl', function($scope, $http, Upload,$state) {
 
     //init
     $scope.submitted = false;
+    $scope.submitok=false;
     $scope.devices = [];
     $scope.monkey = [];
     $scope.monkey.selected = true;
+
 
     //get devices from server
     $http.get('/api/devices').then(response => {
@@ -59,6 +61,8 @@ angular.module('aptWebApp')
           }
         }).then(function(resp) {
           console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+          $scope.submitok=true;
+          $state.go('table');
         }, function(resp) {
           console.log('Error status: ' + resp.status);
         }, function(evt) {

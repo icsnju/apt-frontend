@@ -30,11 +30,11 @@
               </thead>
               <tbody>
                 <tr class="gradeU" ng-repeat="job in jobs" ng-click="selectJob(job)" ng-switch on="isSelected(job)">
-                  <td>{{job.JobId}}</td>
-                  <td>{{job.StartTime}}</td>
-                  <td>{{job.FrameKind}}</td>
-                  <td>{{job.FilterKind}}</td>
-                  <td>{{job.Status}}</td>
+                  <td>{{job.jobid}}</td>
+                  <td>{{job.starttime}}</td>
+                  <td>{{job.framekind}}</td>
+                  <td>{{job.filterkind}}</td>
+                  <td>{{job.status}}</td>
                 </tr>
               </tbody>
             </table>

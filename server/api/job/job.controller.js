@@ -78,17 +78,43 @@ export function index(req, res) {
     console.log('CONNECTED TO: ' + HOST + ':' + PORT);
     client.write(CHECKJOBS);
     client.on('data', function(data) {
-      //console.log('DATA: ' + data);
-      var statusCode = 200;
-      res.status(statusCode).send(data);
+      Job.findAsync()
+        .then(respondJobs(res, data))
+        .catch(handleError(res));
       client.destroy();
     });
   });
 
-
   client.on('close', function() {
     console.log('Connection closed');
   });
+}
+
+function respondJobs(res, data) {
+  var statusCode = 200;
+  return function(entity) {
+    if (entity) {
+
+      //format the key of data to lowercase
+      var runJobs = JSON.parse(data);
+      if (runJobs.length > 0) {
+        var key, keys = Object.keys(runJobs[0]);
+        var n = keys.length;
+        for (var i = 0; i < runJobs.length; i++) {
+          var newJob = {};
+          for (var j = 0; j < n; j++) {
+            key = keys[j];
+            newJob[key.toLowerCase()] = runJobs[i][key];
+          }
+          entity.push(newJob);
+        }
+      }
+      //console.log(entity)
+      res.status(statusCode).json(entity);
+    } else {
+      res.status(statusCode).send(data);
+    }
+  };
 }
 
 // Gets a single Job from the DB

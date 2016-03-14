@@ -10,7 +10,8 @@ angular.module('aptWebApp', [
     'ui.router',
     'validation.match',
     'ngFileUpload',
-    'ngAnimate'
+    'ngAnimate',
+    'bsTable'
   ])
   .config(function($urlRouterProvider, $locationProvider) {
     $urlRouterProvider
